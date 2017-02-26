@@ -56,8 +56,8 @@ type SpectrumQuery struct {
 
 const layout = "2006-01-02T15:04:05"
 
-func indexELSData(xmlMap []map[string]interface{}, host string, index string, dataType string) error {
-	loc, _ := time.LoadLocation("Europe/Oslo")
+func indexELSData(xmlMap []map[string]interface{}, host string, index string, dataType string, bulkSize int, tz string) error {
+	loc, _ := time.LoadLocation(tz)
 	request := gorequest.New()
 	// Create a context
 	ctx := context.Background()
@@ -169,39 +169,17 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 
 		jsonData = jsonData + "}"
 		bulkService.Add(elastic.NewBulkIndexRequest().Index(index).Type(dataType).Id(id).Doc(jsonData))
+		if bulkService.NumberOfActions() >= bulkSize {
+			_, err = bulkService.Do(ctx)
+			if err != nil {
+				log.Error("Failed in doing bulk request ", err)
+			}
+		}
 	}
+	// ingest the rest of the data
 	_, err = bulkService.Do(ctx)
 	if err != nil {
 		log.Error("Failed in doing bulk request ", err)
 	}
 	return nil
 }
-
-// func indexToELS(elsData []string, host string, index string, dataType string, bulkSize int) error {
-// 	request := gorequest.New()
-// 	uri := strings.Join(append([]string{host, index, dataType, "_bulk"}), "/")
-// 	if len(elsData) > bulkSize {
-// 		resp, _, errs := request.Post(uri).
-// 			Send(`{"name":"backy", "species":"dog"}`).
-// 			End()
-// 		if errs != nil {
-// 			errorString := fmt.Sprintf("Could not index Response: %d. Errors: %+v", resp.StatusCode, errs)
-// 			return errors.New(errorString)
-// 		}
-// 	} else {
-// 		spew.Dump(uri)
-// 		data, _ := json.Marshal(strings.Join(elsData[0:2], ""))
-// 		fmt.Println(data)
-// 		resp, _, errs := request.SetDebug(true).SetCurlCommand(true).Post(uri).
-// 			// Set("Content-Type", "application/x-www-form-urlencoded").
-// 			Send(data).
-// 			End()
-
-// 		if errs != nil || resp.StatusCode != 201 || resp.StatusCode != 200 {
-// 			errorString := fmt.Sprintf("Could not index Response: %d. Errors: %+v", resp.StatusCode, errs)
-// 			return errors.New(errorString)
-// 		}
-// 	}
-
-// 	return nil
-// }
