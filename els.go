@@ -118,20 +118,22 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 			"\", \"index\": \"" + specQuery.Index +
 			"\", \"retention_time_sec\": \"" + specQuery.Retention_time_sec + "\""
 
-		// We have multiple hits, so add them as array
+		// We have multiple hits, so add them as array with a counter
+		cnt := 0
 		for _, hit := range searchHits {
-			jsonData = jsonData + ", \"peptide_rank_" + hit.Hit_rank + "\": \"" + hit.Peptide +
-				"\", \"peptide_prev_aa_rank_" + hit.Hit_rank + "\": \"" + hit.Peptide_prev_aa +
-				"\", \"peptide_next_aa_rank_" + hit.Hit_rank + "\": \"" + hit.Peptide_next_aa +
-				"\", \"protein_rank_" + hit.Hit_rank + "\": \"" + hit.Protein +
-				"\", \"num_tot_proteins_rank_" + hit.Hit_rank + "\": \"" + hit.Num_tot_proteins +
-				"\", \"num_matched_ions_rank_" + hit.Hit_rank + "\": \"" + hit.Num_matched_ions +
-				"\", \"tot_num_ions_rank_" + hit.Hit_rank + "\": \"" + hit.Tot_num_ions +
-				"\", \"calc_neutral_pep_mass_rank_" + hit.Hit_rank + "\": \"" + hit.Calc_neutral_pep_mass +
-				"\", \"massdiff_rank_" + hit.Hit_rank + "\": \"" + hit.Massdiff +
-				"\", \"num_tol_term_rank_" + hit.Hit_rank + "\": \"" + hit.Num_tol_term +
-				"\", \"num_missed_cleavages_rank_" + hit.Hit_rank + "\": \"" + hit.Num_missed_cleavages +
-				"\", \"num_matched_peptides_rank_" + hit.Hit_rank + "\": \"" + hit.Num_matched_peptides + "\""
+			cnt = cnt + 1
+			jsonData = jsonData + ", \"peptide_hit_" + cnt + "\": \"" + hit.Peptide +
+				"\", \"peptide_prev_aa_hit_" + cnt + "\": \"" + hit.Peptide_prev_aa +
+				"\", \"peptide_next_aa_hit_" + cnt + "\": \"" + hit.Peptide_next_aa +
+				"\", \"protein_hit_" + cnt + "\": \"" + hit.Protein +
+				"\", \"num_tot_proteins_hit_" + cnt + "\": \"" + hit.Num_tot_proteins +
+				"\", \"num_matched_ions_hit_" + cnt + "\": \"" + hit.Num_matched_ions +
+				"\", \"tot_num_ions_hit_" + cnt + "\": \"" + hit.Tot_num_ions +
+				"\", \"calc_neutral_pep_mass_hit_" + cnt + "\": \"" + hit.Calc_neutral_pep_mass +
+				"\", \"massdiff_hit_" + cnt + "\": \"" + hit.Massdiff +
+				"\", \"num_tol_term_hit_" + cnt + "\": \"" + hit.Num_tol_term +
+				"\", \"num_missed_cleavages_hit_" + cnt + "\": \"" + hit.Num_missed_cleavages +
+				"\", \"num_matched_peptides_hit_" + cnt + "\": \"" + hit.Num_matched_peptides + "\""
 
 			var searchScores []SearchScore
 			err := mapstructure.Decode(hit.Search_score, &searchScores)
@@ -143,21 +145,21 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 			for _, score := range searchScores {
 				switch score.Name {
 				case "xcorr":
-					jsonData = jsonData + ", \"xcorr_rank_" + hit.Hit_rank + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"xcorr_hit_" + cnt + "\":\"" + score.Value + "\""
 				case "deltacn":
-					jsonData = jsonData + ", \"deltacn_rank_" + hit.Hit_rank + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"deltacn_hit_" + cnt + "\":\"" + score.Value + "\""
 				case "deltacnstar":
-					jsonData = jsonData + ", \"deltacnstar_rank_" + hit.Hit_rank + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"deltacnstar_hit_" + cnt + "\":\"" + score.Value + "\""
 				case "spscore":
-					jsonData = jsonData + ", \"spscore_rank_" + hit.Hit_rank + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"spscore_hit_" + cnt + "\":\"" + score.Value + "\""
 				case "sprank":
-					jsonData = jsonData + ", \"sprank_rank_" + hit.Hit_rank + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"sprank_hit_" + cnt + "\":\"" + score.Value + "\""
 				case "expect":
-					jsonData = jsonData + ", \"expect_rank_" + hit.Hit_rank + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"expect_hit_" + cnt + "\":\"" + score.Value + "\""
 				}
 			}
-
 		}
+
 		jsonData = jsonData + "}"
 		resp, _, errs := request.Post(uri + "/" + id).
 			Send(jsonData).
