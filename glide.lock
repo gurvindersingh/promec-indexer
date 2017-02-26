@@ -1,0 +1,20 @@
+hash: 443e98117ffc28df799f1f503b7b5433cf8633a69d1d23dabe5a6cb637db1cd9
+updated: 2017-02-25T14:11:26.736252178+01:00
+imports:
+- name: github.com/clbanning/mxj
+  version: fa408c5a1ceb2f890106d41085ff2d7d33c7fe09
+- name: github.com/davecgh/go-spew
+  version: 5215b55f46b2b919f50a1df0eaa5886afe4e3b3d
+  subpackages:
+  - spew
+- name: github.com/fatih/structs
+  version: a720dfa8df582c51dee1b36feabb906bde1588bd
+- name: github.com/mitchellh/mapstructure
+  version: bfdb1a85537d60bc7e954e600c250219ea497417
+- name: github.com/Sirupsen/logrus
+  version: d26492970760ca5d33129d2d799e34be5c4782eb
+- name: golang.org/x/sys
+  version: 8f0908ab3b2457e2e15403d3697c9ef5cb4b57a9
+  subpackages:
+  - unix
+testImports: []

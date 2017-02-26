@@ -1,0 +1,9 @@
+package: github.com/gurvindersingh/promec-indexer
+import:
+- package: github.com/Sirupsen/logrus
+- package: github.com/clbanning/mxj
+- package: github.com/davecgh/go-spew/spew
+- package: github.com/fatih/structs
+- package: github.com/mitchellh/mapstructure
+- package: golang.org/x/sys/unix
+- package: github.com/parnurzeal/gorequest
