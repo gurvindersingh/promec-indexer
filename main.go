@@ -27,7 +27,7 @@ func main() {
 	log.Info("Promec Indexer started to index file ", *pepxml)
 
 	// Read XML data into a Map
-	xmlMap, _ := readCommetXML(*pepxml)
+	xmlMap, _ := readCometXML(*pepxml)
 
 	// Convert XML map to ELS bulk index format
 	err := indexELSData(xmlMap, *host, *index, *dataType, *bulkSize, *timeZone)

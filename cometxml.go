@@ -8,7 +8,7 @@ import (
 	"github.com/clbanning/mxj"
 )
 
-func readCommetXML(xmlfile string) ([]map[string]interface{}, error) {
+func readCometXML(xmlfile string) ([]map[string]interface{}, error) {
 	xmlData, err := ioutil.ReadFile(xmlfile)
 	if err != nil {
 		log.Error("Failed in reading xml file", err)
