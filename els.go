@@ -1,18 +1,17 @@
 package main
 
 import (
+	"context"
 	"crypto/sha1"
 	"errors"
 	"fmt"
 	"strconv"
-	"strings"
 	"time"
-
-	"github.com/davecgh/go-spew/spew"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/mitchellh/mapstructure"
 	"github.com/parnurzeal/gorequest"
+	"gopkg.in/olivere/elastic.v5"
 )
 
 type SearchScore struct {
@@ -60,6 +59,15 @@ const layout = "2006-01-02T15:04:05"
 func indexELSData(xmlMap []map[string]interface{}, host string, index string, dataType string) error {
 	loc, _ := time.LoadLocation("Europe/Oslo")
 	request := gorequest.New()
+	// Create a context
+	ctx := context.Background()
+	// Create a client
+	client, err := elastic.NewClient(elastic.SetSniff(false))
+	if err != nil {
+		log.Error("Failed in creating elasticserch client ", err)
+		return err
+	}
+	bulkService := elastic.NewBulkService(client)
 
 	// Check is the index exist, then we have template already. Otherwise insert template
 	resp, _, _ := request.Get(host + "/" + index).End()
@@ -74,20 +82,18 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 		}
 	}
 
-	uri := strings.Join(append([]string{host, index, dataType}), "/")
 	for _, specData := range xmlMap {
 		var specQuery SpectrumQuery
 		var searchHits []SearchHit
 
 		err := mapstructure.Decode(specData, &specQuery)
 		if err != nil {
-			log.Error("Failed in parsing SpectrumQuery ", err)
-			spew.Dump(specData)
+			log.Warn("Failed in parsing SpectrumQuery ", err)
 			continue
 		}
 		err = mapstructure.Decode(specQuery.Search_result["search_hit"], &searchHits)
 		if err != nil {
-			log.Error("Failed in parsing Search Result ", err)
+			log.Warn("Failed in parsing Search Result for Index ", specQuery.Index, err)
 			continue
 		}
 
@@ -97,7 +103,7 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 		sec := time.Duration(secInt) * time.Second
 		specQuery.DateTime = specQuery.DateTime.Add(sec)
 		if err != nil {
-			log.Error("Failed in parsing time ", err)
+			log.Warn("Failed in parsing time ", err)
 			continue
 		}
 
@@ -146,33 +152,27 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 			for _, score := range searchScores {
 				switch score.Name {
 				case "xcorr":
-					jsonData = jsonData + ", \"xcorr_hit_" + cnt + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"xcorr_hit_" + cntS + "\":\"" + score.Value + "\""
 				case "deltacn":
-					jsonData = jsonData + ", \"deltacn_hit_" + cnt + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"deltacn_hit_" + cntS + "\":\"" + score.Value + "\""
 				case "deltacnstar":
-					jsonData = jsonData + ", \"deltacnstar_hit_" + cnt + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"deltacnstar_hit_" + cntS + "\":\"" + score.Value + "\""
 				case "spscore":
-					jsonData = jsonData + ", \"spscore_hit_" + cnt + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"spscore_hit_" + cntS + "\":\"" + score.Value + "\""
 				case "sprank":
-					jsonData = jsonData + ", \"sprank_hit_" + cnt + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"sprank_hit_" + cntS + "\":\"" + score.Value + "\""
 				case "expect":
-					jsonData = jsonData + ", \"expect_hit_" + cnt + "\":\"" + score.Value + "\""
+					jsonData = jsonData + ", \"expect_hit_" + cntS + "\":\"" + score.Value + "\""
 				}
 			}
 		}
 
 		jsonData = jsonData + "}"
-		resp, _, errs := request.Post(uri + "/" + id).
-			Send(jsonData).
-			End()
-
-		if errs != nil {
-			return errors.New(fmt.Sprintf("Could not index data: %v", errs))
-		}
-
-		if resp != nil && (resp.StatusCode < 200 || resp.StatusCode > 201) {
-			return errors.New(fmt.Sprintf("Could not index Response: %d", resp.StatusCode))
-		}
+		bulkService.Add(elastic.NewBulkIndexRequest().Index(index).Type(dataType).Id(id).Doc(jsonData))
+	}
+	_, err = bulkService.Do(ctx)
+	if err != nil {
+		log.Error("Failed in doing bulk request ", err)
 	}
 	return nil
 }

@@ -7,3 +7,4 @@ import:
 - package: github.com/mitchellh/mapstructure
 - package: golang.org/x/sys/unix
 - package: github.com/parnurzeal/gorequest
+- package: gopkg.in/olivere/elastic.v5
