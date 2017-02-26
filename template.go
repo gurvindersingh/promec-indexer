@@ -105,6 +105,16 @@ const template = `{
                     }
                 },
                 {
+                    "index_fields": {
+                        "match": "index",
+                        "mapping": {
+                            "type": "integer",
+                            "omit_norms": true,
+                            "index": "analyzed"
+                        }
+                    }
+                },
+                {
                     "sprank_fields": {
                         "match": "sprank_*",
                         "mapping": {
