@@ -62,7 +62,9 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 	// Create a context
 	ctx := context.Background()
 	// Create a client
-	client, err := elastic.NewClient(elastic.SetSniff(false))
+	client, err := elastic.NewClient(
+		elastic.SetURL(host),
+		elastic.SetSniff(false))
 	if err != nil {
 		log.Error("Failed in creating elasticserch client ", err)
 		return err
