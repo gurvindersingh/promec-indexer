@@ -122,18 +122,19 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 		cnt := 0
 		for _, hit := range searchHits {
 			cnt = cnt + 1
-			jsonData = jsonData + ", \"peptide_hit_" + cnt + "\": \"" + hit.Peptide +
-				"\", \"peptide_prev_aa_hit_" + cnt + "\": \"" + hit.Peptide_prev_aa +
-				"\", \"peptide_next_aa_hit_" + cnt + "\": \"" + hit.Peptide_next_aa +
-				"\", \"protein_hit_" + cnt + "\": \"" + hit.Protein +
-				"\", \"num_tot_proteins_hit_" + cnt + "\": \"" + hit.Num_tot_proteins +
-				"\", \"num_matched_ions_hit_" + cnt + "\": \"" + hit.Num_matched_ions +
-				"\", \"tot_num_ions_hit_" + cnt + "\": \"" + hit.Tot_num_ions +
-				"\", \"calc_neutral_pep_mass_hit_" + cnt + "\": \"" + hit.Calc_neutral_pep_mass +
-				"\", \"massdiff_hit_" + cnt + "\": \"" + hit.Massdiff +
-				"\", \"num_tol_term_hit_" + cnt + "\": \"" + hit.Num_tol_term +
-				"\", \"num_missed_cleavages_hit_" + cnt + "\": \"" + hit.Num_missed_cleavages +
-				"\", \"num_matched_peptides_hit_" + cnt + "\": \"" + hit.Num_matched_peptides + "\""
+			cntS := strconv.Itoa(cnt)
+			jsonData = jsonData + ", \"peptide_hit_" + cntS + "\": \"" + hit.Peptide +
+				"\", \"peptide_prev_aa_hit_" + cntS + "\": \"" + hit.Peptide_prev_aa +
+				"\", \"peptide_next_aa_hit_" + cntS + "\": \"" + hit.Peptide_next_aa +
+				"\", \"protein_hit_" + cntS + "\": \"" + hit.Protein +
+				"\", \"num_tot_proteins_hit_" + cntS + "\": \"" + hit.Num_tot_proteins +
+				"\", \"num_matched_ions_hit_" + cntS + "\": \"" + hit.Num_matched_ions +
+				"\", \"tot_num_ions_hit_" + cntS + "\": \"" + hit.Tot_num_ions +
+				"\", \"calc_neutral_pep_mass_hit_" + cntS + "\": \"" + hit.Calc_neutral_pep_mass +
+				"\", \"massdiff_hit_" + cntS + "\": \"" + hit.Massdiff +
+				"\", \"num_tol_term_hit_" + cntS + "\": \"" + hit.Num_tol_term +
+				"\", \"num_missed_cleavages_hit_" + cntS + "\": \"" + hit.Num_missed_cleavages +
+				"\", \"num_matched_peptides_hit_" + cntS + "\": \"" + hit.Num_matched_peptides + "\""
 
 			var searchScores []SearchScore
 			err := mapstructure.Decode(hit.Search_score, &searchScores)
