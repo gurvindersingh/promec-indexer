@@ -27,12 +27,17 @@ func main() {
 	log.Info("Promec Indexer started to index file ", *pepxml)
 
 	// Read XML data into a Map
-	xmlMap, _ := readCometXML(*pepxml)
+	xmlMap, err := readCometXML(*pepxml)
+	if err != nil {
+		log.Error("Failed in parsing XML data ", err)
+		os.Exit(1)
+	}
 
 	// Convert XML map to ELS bulk index format
-	err := indexELSData(xmlMap, *host, *index, *dataType, *bulkSize, *timeZone)
+	err = indexELSData(xmlMap, *host, *index, *dataType, *bulkSize, *timeZone)
 	if err != nil {
 		log.Error("Failed in ingesting data for file ", *pepxml, err)
+		os.Exit(1)
 	} else {
 		log.Info("Successfully indexed data from ", *pepxml)
 	}
