@@ -84,6 +84,8 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 		}
 	}
 
+	log.Info("Indexing data to elasticserch: " + host + " index: " + index)
+
 	for _, specData := range xmlMap {
 		var specQuery SpectrumQuery
 		var searchHits []SearchHit
