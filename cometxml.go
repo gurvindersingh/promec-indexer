@@ -3,17 +3,14 @@ package main
 import (
 	"io/ioutil"
 	"strings"
+	"time"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/clbanning/mxj"
 )
 
 func readCometXML(xmlfile string) ([]map[string]interface{}, error) {
-	xmlData, err := ioutil.ReadFile(xmlfile)
-	if err != nil {
-		log.Error("Failed in reading xml file", err)
-		return nil, err
-	}
+	xmlData, err := readXMLFile(xmlfile)
 	mxj.PrependAttrWithHyphen(false)
 	mapVal, err := mxj.NewMapXml(xmlData)
 	if err != nil {
@@ -67,4 +64,19 @@ func readCometXML(xmlfile string) ([]map[string]interface{}, error) {
 	}
 
 	return xmlMap, nil
+}
+
+func readXMLFile(xmlfile string) ([]byte, error) {
+	for {
+		xmldata, err := ioutil.ReadFile(xmlfile)
+		if err != nil && strings.Contains(err.Error(), "no such file") {
+			log.Debug(xmlfile, " not created/found, sleeping..")
+			time.Sleep(10 * time.Second)
+			continue
+		}
+		if err != nil {
+			return nil, err
+		}
+		return xmldata, nil
+	}
 }

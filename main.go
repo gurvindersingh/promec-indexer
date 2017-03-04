@@ -14,6 +14,7 @@ var (
 	dataType = flag.String("datatype", "search_hit", "Data type to be used under index")
 	timeZone = flag.String("timezone", "Europe/Oslo", "Timezone to be used in parsing the date from Pep XML file")
 	bulkSize = flag.Int("bulksize", 500, "Number of request to send in one bulk request")
+	loglevel = flag.String("loglevel", "info", "Log level used for printing logs")
 )
 
 func init() {
@@ -24,6 +25,17 @@ func init() {
 
 func main() {
 	flag.Parse()
+	// Set up correct log level
+	lvl, err := log.ParseLevel(*loglevel)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"detail": err,
+		}).Warn("Could not parse log level, using default")
+		log.SetLevel(log.InfoLevel)
+	} else {
+		log.SetLevel(lvl)
+	}
+
 	log.Info("Promec Indexer started to index file ", *pepxml)
 
 	// Read XML data into a Map
