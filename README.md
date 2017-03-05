@@ -5,5 +5,5 @@
 You can test it using Docker as
 
 ```
-docker run -ti -v /path/to/test.pep.xml:/test.pep.xml gurvin/promec-indexer:0.1 -pepxml /test.pep-xml -host http://elasisearch-host.com:9200
+docker run -ti -v /path/to/test.pep.xml:/test.pep.xml gurvin/promec-indexer promec-indexer -pepxml /test.pep-xml -host http://elasisearch-host.com:9200
 ```
