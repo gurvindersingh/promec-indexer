@@ -187,3 +187,7 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 	}
 	return nil
 }
+
+func isFileIndexed(fName string) bool {
+	return false
+}
