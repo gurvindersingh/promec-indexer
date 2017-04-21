@@ -5,6 +5,8 @@ import (
 	"os"
 	"time"
 
+	elastic "gopkg.in/olivere/elastic.v5"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/davecgh/go-spew/spew"
 )
@@ -44,6 +46,15 @@ func main() {
 	}
 	interval := time.Duration(*sleepInterval)
 
+	// Create elasticsearch client
+	client, err := elastic.NewClient(
+		elastic.SetURL(*host),
+		elastic.SetSniff(false))
+
+	if err != nil {
+		log.Fatal("Failed in creating elasticserch client ", err)
+	}
+
 	// We are running in single file indexing mode
 	if *dirName == "" {
 		log.Info("Promec Indexer started to index file ", *pepxml)
@@ -55,7 +66,7 @@ func main() {
 		}
 
 		// Convert XML map to ELS bulk index format
-		err = indexELSData(xmlMap, *host, *index, *dataType, *bulkSize, *timeZone)
+		err = indexELSData(xmlMap, *host, *index, *dataType, *bulkSize, *timeZone, *pepxml, client)
 		if err != nil {
 			log.Error("Failed in ingesting data for file ", *pepxml, err)
 			os.Exit(1)

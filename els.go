@@ -56,19 +56,19 @@ type SpectrumQuery struct {
 
 const layout = "2006-01-02T15:04:05"
 
-func indexELSData(xmlMap []map[string]interface{}, host string, index string, dataType string, bulkSize int, tz string) error {
+func indexELSData(
+	xmlMap []map[string]interface{},
+	host string,
+	index string,
+	dataType string,
+	bulkSize int,
+	tz string,
+	pepFileName string,
+	client *elastic.Client) error {
 	loc, _ := time.LoadLocation(tz)
 	request := gorequest.New()
 	// Create a context
 	ctx := context.Background()
-	// Create a client
-	client, err := elastic.NewClient(
-		elastic.SetURL(host),
-		elastic.SetSniff(false))
-	if err != nil {
-		log.Error("Failed in creating elasticserch client ", err)
-		return err
-	}
 	bulkService := elastic.NewBulkService(client)
 
 	// Check is the index exist, then we have template already. Otherwise insert template
@@ -119,6 +119,7 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 			"\", \"search_engine\": \"" + specQuery.SearchEng +
 			"\", \"file\": \"" + specQuery.File +
 			"\", \"filetype\": \"" + specQuery.FileType +
+			"\", \"pep_file_name\": \"" + pepFileName +
 			"\", \"spectrum\": \"" + specQuery.Spectrum +
 			"\", \"spectrumNativeID\": \"" + specQuery.SpectrumNativeID +
 			"\", \"start_scan\": \"" + specQuery.Start_scan +
@@ -174,14 +175,14 @@ func indexELSData(xmlMap []map[string]interface{}, host string, index string, da
 		jsonData = jsonData + "}"
 		bulkService.Add(elastic.NewBulkIndexRequest().Index(index).Type(dataType).Id(id).Doc(jsonData))
 		if bulkService.NumberOfActions() >= bulkSize {
-			_, err = bulkService.Do(ctx)
+			_, err := bulkService.Do(ctx)
 			if err != nil {
 				log.Error("Failed in doing bulk request ", err)
 			}
 		}
 	}
 	// ingest the rest of the data
-	_, err = bulkService.Do(ctx)
+	_, err := bulkService.Do(ctx)
 	if err != nil {
 		log.Error("Failed in doing bulk request ", err)
 	}
