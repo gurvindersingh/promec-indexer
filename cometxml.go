@@ -9,8 +9,12 @@ import (
 	"github.com/clbanning/mxj"
 )
 
-func readCometXML(xmlfile string) ([]map[string]interface{}, error) {
-	xmlData, err := readXMLFile(xmlfile)
+func readCometXML(xmlfile string, waitMode bool) ([]map[string]interface{}, error) {
+	xmlData, err := readXMLFile(xmlfile, waitMode)
+	if err != nil {
+		log.Error("Failed in reading XML file ", err)
+		return nil, err
+	}
 	mxj.PrependAttrWithHyphen(false)
 	mapVal, err := mxj.NewMapXml(xmlData)
 	if err != nil {
@@ -66,10 +70,10 @@ func readCometXML(xmlfile string) ([]map[string]interface{}, error) {
 	return xmlMap, nil
 }
 
-func readXMLFile(xmlfile string) ([]byte, error) {
+func readXMLFile(xmlfile string, waitMode bool) ([]byte, error) {
 	for {
 		xmldata, err := ioutil.ReadFile(xmlfile)
-		if err != nil && strings.Contains(err.Error(), "no such file") {
+		if err != nil && waitMode && strings.Contains(err.Error(), "no such file") {
 			log.Debug(xmlfile, " not created/found, sleeping..")
 			time.Sleep(10 * time.Second)
 			continue

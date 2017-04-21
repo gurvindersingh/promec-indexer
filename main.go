@@ -21,6 +21,7 @@ var (
 	loglevel      = flag.String("loglevel", "info", "Log level used for printing logs")
 	dirName       = flag.String("directory", "", "Directory Path to watch for pepxml files and index")
 	sleepInterval = flag.Int64("sleep-interval", 10, "Sleep interval in seconds")
+	waitMode      = flag.Bool("wait-mode", false, "Indexer will wait for the file to be created")
 )
 
 func init() {
@@ -48,9 +49,8 @@ func main() {
 		log.Info("Promec Indexer started to index file ", *pepxml)
 
 		// Read XML data into a Map
-		xmlMap, err := readCometXML(*pepxml)
+		xmlMap, err := readCometXML(*pepxml, *waitMode)
 		if err != nil {
-			log.Error("Failed in parsing XML data ", err)
 			os.Exit(1)
 		}
 
