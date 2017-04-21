@@ -77,7 +77,7 @@ func main() {
 		// Now we are watching the directory for new xml files
 		for {
 			//Get the files which are not processed yet
-			files, err := watchDir(*dirName)
+			files, err := watchDir(*dirName, client, *index)
 			if err != nil {
 				log.Error("Error in watching directory ", err)
 				// Sleep predfined interval and retry

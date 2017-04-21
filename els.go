@@ -189,6 +189,6 @@ func indexELSData(
 	return nil
 }
 
-func isFileIndexed(fName string) bool {
+func isFileIndexed(fName string, client *elastic.Client, index string) bool {
 	return false
 }

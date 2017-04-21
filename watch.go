@@ -5,10 +5,12 @@ import (
 	"strings"
 	"time"
 
+	elastic "gopkg.in/olivere/elastic.v5"
+
 	log "github.com/Sirupsen/logrus"
 )
 
-func watchDir(dirName string) ([]string, error) {
+func watchDir(dirName string, client *elastic.Client, index string) ([]string, error) {
 	allfiles, err := ioutil.ReadDir(dirName)
 	if err != nil {
 		log.Error("Error in reading directory", err)
@@ -27,7 +29,7 @@ func watchDir(dirName string) ([]string, error) {
 	var newFiles []string
 	for _, file := range files {
 		if strings.Contains(file, srcExtension) {
-			if !isFileIndexed(file) {
+			if !isFileIndexed(file, client, index) {
 				newFiles = append(newFiles, file)
 			}
 		}
