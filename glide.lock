@@ -1,20 +1,40 @@
-hash: 443e98117ffc28df799f1f503b7b5433cf8633a69d1d23dabe5a6cb637db1cd9
-updated: 2017-02-25T14:11:26.736252178+01:00
+hash: 486328be3f9824f182483215187b7e5cfaa734b0cb96e688441383dd7d5711b1
+updated: 2017-04-22T09:20:23.085812907+02:00
 imports:
 - name: github.com/clbanning/mxj
-  version: fa408c5a1ceb2f890106d41085ff2d7d33c7fe09
+  version: 185f4035999c087d40a5bc20c264bfe7f4a99422
 - name: github.com/davecgh/go-spew
-  version: 5215b55f46b2b919f50a1df0eaa5886afe4e3b3d
+  version: 04cdfd42973bb9c8589fd6a731800cf222fde1a9
   subpackages:
   - spew
 - name: github.com/fatih/structs
   version: a720dfa8df582c51dee1b36feabb906bde1588bd
+- name: github.com/mattn/go-colorable
+  version: ded68f7a9561c023e790de24279db7ebf473ea80
+- name: github.com/mattn/go-isatty
+  version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/mitchellh/mapstructure
-  version: bfdb1a85537d60bc7e954e600c250219ea497417
+  version: cc8532a8e9a55ea36402aa21efdf403a60d34096
+- name: github.com/moul/http2curl
+  version: 4e24498b31dba4683efb9d35c1c8a91e2eda28c8
+- name: github.com/parnurzeal/gorequest
+  version: 5ba0c8579b72c0577d482e07d3d0f01731641ca7
+- name: github.com/pkg/errors
+  version: ff09b135c25aae272398c51a07235b90a75aa4f0
 - name: github.com/Sirupsen/logrus
-  version: d26492970760ca5d33129d2d799e34be5c4782eb
+  version: ba1b36c82c5e05c4f912a88eab0dcd91a171688f
+- name: golang.org/x/net
+  version: e90d6d0afc4c315a0d87a568ae68577cc15149a0
+  subpackages:
+  - context
+  - context/ctxhttp
+  - publicsuffix
 - name: golang.org/x/sys
-  version: 8f0908ab3b2457e2e15403d3697c9ef5cb4b57a9
+  version: ea9bcade75cb975a0b9738936568ab388b845617
   subpackages:
   - unix
+- name: gopkg.in/olivere/elastic.v5
+  version: 00cf81dff7fdb9e31f70e99bd909339789e71a8e
+  subpackages:
+  - uritemplates
 testImports: []
