@@ -22,7 +22,7 @@ var (
 	bulkSize      = flag.Int("bulksize", 500, "Number of request to send in one bulk request")
 	loglevel      = flag.String("loglevel", "info", "Log level used for printing logs")
 	dirName       = flag.String("directory", "", "Directory Path to watch for pepxml files and index")
-	sleepInterval = flag.Int64("sleep-interval", 10, "Sleep interval in seconds")
+	sleepInterval = flag.Int64("sleep-interval", 30, "Sleep interval in seconds")
 	waitMode      = flag.Bool("wait-mode", false, "Indexer will wait for the file to be created")
 	logformat     = flag.String("logformat", "text", "Choose Log format: json or text")
 )
