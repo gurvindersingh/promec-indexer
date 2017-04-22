@@ -4,7 +4,7 @@ const template = `{
     "mappings": {
         "_default_": {
             "_all": {
-                "enabled": false
+                "enabled": true
             },
             "properties": {
                 "@timestamp": {
