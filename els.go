@@ -112,7 +112,7 @@ func indexELSData(
 		}
 
 		// Add current spectrum query data to elasticserch data in bulk format
-		id := fmt.Sprintf("%x", sha1.Sum([]byte(specQuery.Spectrum)))
+		id := fmt.Sprintf("%x", sha1.Sum([]byte(specQuery.Spectrum+pepFileName)))
 		// Add 000 to make time in milliseconds
 		jsonData := "{\"@timestamp\":\"" + strconv.FormatInt(specQuery.DateTime.Unix(), 10) + "000" +
 			"\", \"database\": \"" + specQuery.DbName +
