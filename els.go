@@ -190,5 +190,23 @@ func indexELSData(
 }
 
 func isFileIndexed(fName string, client *elastic.Client, index string) bool {
+	fQuery := elastic.NewMatchPhraseQuery("pep_file_name", fName)
+	log.Debug("Checking file ", fName)
+	searchResult, err := client.Search().
+		Index(index).
+		Query(fQuery).
+		Size(10).
+		Do(context.Background())
+
+	if err != nil {
+		log.Error("Failed in checking whether file is indexed ", err)
+		return false
+	}
+
+	log.Debug("Got search result for ", fName, " with hits ", searchResult.Hits.TotalHits)
+	if searchResult.Hits.TotalHits > 0 {
+		return true
+	}
+
 	return false
 }

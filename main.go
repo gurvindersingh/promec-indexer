@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"os"
+	"path/filepath"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/davecgh/go-spew/spew"
 	colorable "github.com/mattn/go-colorable"
 	elastic "gopkg.in/olivere/elastic.v5"
 )
@@ -88,9 +88,27 @@ func main() {
 				time.Sleep(interval * time.Second)
 				continue
 			}
-			spew.Dump(files)
+
+			log.Debug("Got files to index ", files)
+			for _, file := range files {
+				fPath := filepath.Join(*dirName, file)
+				xmlMap, err := readCometXML(fPath, *waitMode)
+				if err != nil {
+					log.Error(err)
+					continue
+				}
+				err = indexELSData(xmlMap, *host, *index, *dataType, *bulkSize, *timeZone, file, client)
+				if err != nil {
+					log.Error("Failed in ingesting data for file ", file, err)
+					continue
+				} else {
+					log.Info("Successfully indexed data from ", file)
+				}
+			}
+			if len(files) == 0 {
+				log.Info("Found no files, sleeping..")
+			}
 			time.Sleep(interval * time.Second)
 		}
 	}
-
 }
