@@ -84,7 +84,7 @@ func indexELSData(
 		}
 	}
 
-	log.Info("Indexing data to elasticserch: " + host + " index: " + index)
+	log.Info("Indexing " + pepFileName + " to elasticserch: " + host + " index: " + index)
 
 	for _, specData := range xmlMap {
 		var specQuery SpectrumQuery

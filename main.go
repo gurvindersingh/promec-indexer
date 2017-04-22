@@ -78,6 +78,7 @@ func main() {
 		}
 	} else {
 		// Now we are watching the directory for new xml files
+		log.Info("Promec Indexer is watching directory \"", *dirName, "\"")
 		for {
 			//Get the files which are not processed yet
 			files, err := watchDir(*dirName, client, *index)
