@@ -5,10 +5,10 @@ import (
 	"os"
 	"time"
 
-	elastic "gopkg.in/olivere/elastic.v5"
-
 	log "github.com/Sirupsen/logrus"
 	"github.com/davecgh/go-spew/spew"
+	colorable "github.com/mattn/go-colorable"
+	elastic "gopkg.in/olivere/elastic.v5"
 )
 
 const srcExtension = "pep.xml"
@@ -27,9 +27,8 @@ var (
 )
 
 func init() {
-	// Log as JSON to stderr
-	log.SetFormatter(&log.JSONFormatter{})
-	log.SetOutput(os.Stderr)
+	log.SetFormatter(&log.TextFormatter{ForceColors: true})
+	log.SetOutput(colorable.NewColorableStdout())
 }
 
 func main() {
