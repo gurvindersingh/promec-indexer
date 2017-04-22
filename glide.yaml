@@ -8,4 +8,5 @@ import:
 - package: golang.org/x/sys/unix
 - package: github.com/parnurzeal/gorequest
 - package: gopkg.in/olivere/elastic.v5
+  version: 5.0.35
 - package: github.com/mattn/go-colorable
