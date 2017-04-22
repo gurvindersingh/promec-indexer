@@ -10,7 +10,7 @@ const template = `{
                 "@timestamp": {
                     "type": "date",
                     "format": "strict_date_optional_time||epoch_millis",
-                    "index": "not_analyzed"
+                    "index": "true"
                 }
             },
             "dynamic_templates": [
@@ -19,8 +19,8 @@ const template = `{
                         "match": "*num*",
                         "mapping": {
                             "type": "long",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -29,8 +29,8 @@ const template = `{
                         "match": "*scan*",
                         "mapping": {
                             "type": "integer",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -39,8 +39,8 @@ const template = `{
                         "match": "*mass*",
                         "mapping": {
                             "type": "double",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -49,8 +49,8 @@ const template = `{
                         "match": "*_charge",
                         "mapping": {
                             "type": "integer",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -59,8 +59,8 @@ const template = `{
                         "match": "*_sec",
                         "mapping": {
                             "type": "double",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -69,8 +69,8 @@ const template = `{
                         "match": "xcorr_*",
                         "mapping": {
                             "type": "double",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -79,8 +79,8 @@ const template = `{
                         "match": "deltacn_*",
                         "mapping": {
                             "type": "double",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -89,8 +89,8 @@ const template = `{
                         "match": "deltacnstar_*",
                         "mapping": {
                             "type": "double",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -99,8 +99,8 @@ const template = `{
                         "match": "spscore_*",
                         "mapping": {
                             "type": "double",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -109,8 +109,8 @@ const template = `{
                         "match": "index",
                         "mapping": {
                             "type": "integer",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -119,8 +119,8 @@ const template = `{
                         "match": "sprank_*",
                         "mapping": {
                             "type": "integer",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -129,8 +129,8 @@ const template = `{
                         "match": "deltacnstar_*",
                         "mapping": {
                             "type": "double",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 },
@@ -143,12 +143,12 @@ const template = `{
                                 "raw": {
                                     "type": "keyword",
                                     "ignore_above": 256,
-                                    "index": "not_analyzed"
+                                    "index": false
                                 }
                             },
                             "type": "text",
-                            "omit_norms": true,
-                            "index": "analyzed"
+                            "norms": false,
+                            "index": true
                         }
                     }
                 }
