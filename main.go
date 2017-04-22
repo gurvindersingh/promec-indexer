@@ -24,16 +24,19 @@ var (
 	dirName       = flag.String("directory", "", "Directory Path to watch for pepxml files and index")
 	sleepInterval = flag.Int64("sleep-interval", 10, "Sleep interval in seconds")
 	waitMode      = flag.Bool("wait-mode", false, "Indexer will wait for the file to be created")
+	logformat     = flag.String("logformat", "text", "Choose Log format: json or text")
 )
-
-func init() {
-	log.SetFormatter(&log.TextFormatter{ForceColors: true})
-	log.SetOutput(colorable.NewColorableStdout())
-}
 
 func main() {
 	flag.Parse()
-	// Set up correct log level
+
+	// Set up correct log level and format
+	if *logformat == "text" {
+		log.SetFormatter(&log.TextFormatter{ForceColors: true})
+		log.SetOutput(colorable.NewColorableStdout())
+	} else {
+		log.SetFormatter(&log.JSONFormatter{})
+	}
 	lvl, err := log.ParseLevel(*loglevel)
 	if err != nil {
 		log.WithFields(log.Fields{
@@ -43,6 +46,7 @@ func main() {
 	} else {
 		log.SetLevel(lvl)
 	}
+
 	interval := time.Duration(*sleepInterval)
 
 	// Create elasticsearch client
