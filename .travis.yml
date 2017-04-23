@@ -3,7 +3,7 @@ language: go
 go:
 - 1.8.x
 services:
-  - docker
+- docker
 before_install:
 - mkdir -p $GOPATH/bin
 - curl https://glide.sh/get | sh
@@ -11,12 +11,12 @@ before_install:
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker build -t quay.io/$TRAVIS_REPO_SLUG:latest .;
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" quay.io;
     docker push quay.io/$TRAVIS_REPO_SLUG:latest;
     fi
   - if [ "$TRAVIS_TAG" != "" ]; then
     docker build -t quay.io/$TRAVIS_REPO_SLUG:$TRAVIS_TAG .;
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" quay.io;
     docker push quay.io/$TRAVIS_REPO_SLUG:$TRAVIS_TAG;
     fi
 deploy:
@@ -24,10 +24,13 @@ deploy:
   api_key:
     secure: jKYdVcxkA/1+kRlRQyVtrb+RB++vWDPia4/3ew2jigjLk7lrnbqyJ3wUYv9kZtS6pQ4DQAgJjdENhzcR94/zBJR1xhwC0XyshgpQkOyAoSTUpsy5F5nR39lXddZBGsILYpUbk2h8JaaGOZPI8VfUAT5md7WXpndk2r2Ka04oYU2hsCl2CvOsljVblFzQePYt5knujJ7TBizh+3rAsIlV8vJZVlHoqa+fRwpONBsiX9hpjJACoNbcCLgGFJGIZcpTNApU6oLIzGLGe9eMrVPoHLi7CssNPuHuTEnVuskG9My8WWIMOLe5wo0jtVZRoPJv/qRfnNFLbGBBcmbo3tSi2QqZUNE6jXmOJfRQmdWgeXmR5HGIKVWMiazHLX5EssqviG8OoKlAH+mvHlZqc2sQs0a89tRFn659IpWxO0uGXJNuNjn8HfA7YQeGJKxUBKe85Rus+u/4B7pNOQUaQc5Wnh+HkMX2cEuPBlnMRR1sWh4kHV4aDvy9AjH3nJD7v9tLEZ9tKH/ubgm8KegXrX7PtA8LoEBzQ6m/BNignxwp16k4oxTjTEVP16L7JDsf5pl2ifQKW4a5azUgynq3DgzDSapW4K7l6VZKInFM0yG27lpcqH1nnOeBy/W6nAQFPy05H7VPxRk415KGIBPXQBPLYLZRrs6wyEauLJDN1oXNgAc=
   file:
-    - dist/promec-indexer-linux-amd64
-    - dist/promec-indexer-darwin-amd64
-    - dist/promec-indexer-windows-amd64.exe
+  - dist/promec-indexer-linux-amd64
+  - dist/promec-indexer-darwin-amd64
+  - dist/promec-indexer-windows-amd64.exe
   skip_cleanup: true
   on:
     repo: gurvindersingh/promec-indexer
     tags: true
+env:
+  matrix:
+    secure: JytK8tS29jK+b3uB2Um833rUPItEb/SV+bIBKI6wupAj3XzphIqod/43WBWH9pSwIW2nagOgGJkbLfNu58Md3JQE5z2lPruXfAGe/GVDd8hwdZr/CZOlV352EbVHmdr7/ZmFB2i62PCr/NqnjMTEUmdJSwv0oLClKKMHCLYbS4RwLGJZA3qSu1T2QL3VkhfeExNJ+AG22p5zbLAxj47SQ41wW/tl7Ms/faUVby9kLLonUKXZYeO/A5Q5yUxnjjq+Fmu6Ra9H7bprf+aUjSdO/YfhxMH3eTF52f2y5YWz6GTFm+XLuWXPG1qKcVyeUoGnci0F+kF5sD+eBOs7QcbcYcvcOx/4sviO6WVcN7FWbqC4sJk3CgcDH5XIR0Fgkb/LgJzOP/QDHozdwbNvOd0NWGU7nBWBeIvOJSwYrXq/6IKLtL65UI8FxI/LvHtVaVjXukUccDMzJWsd9pSTTPWdX2W+zH5BSnWGT/jXHYX0VkfU1QdxENCbFBZl896BHfw8OuTEwuHEInDiAh/hbUug13s8QAMjbuAcllzDXsitwsOxjDI5L1+7eQUYJCIbMIT/0m7LGazQRcBZanePccVwTlXhSjwZChiubnkDPbCvUMdWANUczYtRAGzul67l1FYm+ZWL0dRx+HUCkDviLLAm0xVUMbNo/awtBDmskk22MWk=
