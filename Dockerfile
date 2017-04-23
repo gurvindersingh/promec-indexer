@@ -11,7 +11,7 @@ RUN ZIP=comet_binaries_$COMET_VERSION.zip && \
 	mv /tmp/comet_binaries_$COMET_VERSION/comet.$COMET_VERSION.linux.exe /bin/comet && \
 	rm -rf /tmp/comet_binaries*
 
-COPY ./promec-indexer-linux-amd64 /bin/promec-indexer
+COPY dist/promec-indexer-linux-amd64 /bin/promec-indexer
 
 ENV UID 999
 ENV GID 999
