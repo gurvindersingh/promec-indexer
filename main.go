@@ -14,7 +14,7 @@ import (
 const srcExtension = "pep.xml"
 
 var (
-	pepxml        = flag.String("pepxml", "test.pep.xml", "path to the pepxml file to index")
+	pepxml        = flag.String("pepxml", "", "path to the pepxml file to index")
 	host          = flag.String("host", "http://localhost:9200", "Elasticsearch host with port and protocol information")
 	index         = flag.String("index", "promec", "Index name in elasticsearch where xml data will be indexed")
 	dataType      = flag.String("datatype", "search_hit", "Data type to be used under index")
@@ -45,6 +45,12 @@ func main() {
 		log.SetLevel(log.InfoLevel)
 	} else {
 		log.SetLevel(lvl)
+	}
+
+	if *dirName == "" && *pepxml == "" {
+		log.Fatal("Provide atleast directory path or Pep XML file to index")
+	} else if *dirName != "" && *pepxml != "" {
+		log.Fatal("Provide only one directory path or Pep XML file to index, not both")
 	}
 
 	interval := time.Duration(*sleepInterval)
