@@ -5,3 +5,15 @@ before_install:
 - mkdir -p $GOPATH/bin
 - curl https://glide.sh/get | sh
 - glide install
+deploy:
+  provider: releases
+  api_key:
+    secure: jKYdVcxkA/1+kRlRQyVtrb+RB++vWDPia4/3ew2jigjLk7lrnbqyJ3wUYv9kZtS6pQ4DQAgJjdENhzcR94/zBJR1xhwC0XyshgpQkOyAoSTUpsy5F5nR39lXddZBGsILYpUbk2h8JaaGOZPI8VfUAT5md7WXpndk2r2Ka04oYU2hsCl2CvOsljVblFzQePYt5knujJ7TBizh+3rAsIlV8vJZVlHoqa+fRwpONBsiX9hpjJACoNbcCLgGFJGIZcpTNApU6oLIzGLGe9eMrVPoHLi7CssNPuHuTEnVuskG9My8WWIMOLe5wo0jtVZRoPJv/qRfnNFLbGBBcmbo3tSi2QqZUNE6jXmOJfRQmdWgeXmR5HGIKVWMiazHLX5EssqviG8OoKlAH+mvHlZqc2sQs0a89tRFn659IpWxO0uGXJNuNjn8HfA7YQeGJKxUBKe85Rus+u/4B7pNOQUaQc5Wnh+HkMX2cEuPBlnMRR1sWh4kHV4aDvy9AjH3nJD7v9tLEZ9tKH/ubgm8KegXrX7PtA8LoEBzQ6m/BNignxwp16k4oxTjTEVP16L7JDsf5pl2ifQKW4a5azUgynq3DgzDSapW4K7l6VZKInFM0yG27lpcqH1nnOeBy/W6nAQFPy05H7VPxRk415KGIBPXQBPLYLZRrs6wyEauLJDN1oXNgAc=
+  file:
+    - dist/promec-indexer-linux-amd64
+    - dist/promec-indexer-darwin-amd64
+    - dist/promec-indexer-windows-amd64.exe
+  skip_cleanup: true
+  on:
+    repo: gurvindersingh/promec-indexer
+    tags: true
