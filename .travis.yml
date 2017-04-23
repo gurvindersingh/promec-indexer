@@ -1,10 +1,24 @@
+sudo: required
 language: go
 go:
 - 1.8.x
+services:
+  - docker
 before_install:
 - mkdir -p $GOPATH/bin
 - curl https://glide.sh/get | sh
 - glide install
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker build -t quay.io/$TRAVIS_REPO_SLUG:latest .;
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push quay.io/$TRAVIS_REPO_SLUG:latest;
+    fi
+  - if [ "$TRAVIS_TAG" != "" ]; then
+    docker build -t quay.io/$TRAVIS_REPO_SLUG:$TRAVIS_TAG .;
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push quay.io/$TRAVIS_REPO_SLUG:$TRAVIS_TAG;
+    fi
 deploy:
   provider: releases
   api_key:
