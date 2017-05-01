@@ -25,7 +25,25 @@ var (
 	sleepInterval = flag.Int64("sleep-interval", 30, "Sleep interval in seconds")
 	waitMode      = flag.Bool("wait-mode", false, "Indexer will wait for the file to be created")
 	logformat     = flag.String("logformat", "text", "Choose Log format: json or text")
+	retry         = flag.Int("retry", 5, "How many times to retry to connect to Elasticsearch with 10secs interval")
 )
+
+func getElasticsearchClient() (*elastic.Client, error) {
+	var err error
+	for i := 0; i <= *retry; i++ {
+		client, err := elastic.NewClient(
+			elastic.SetURL(*host),
+			elastic.SetSniff(false),
+			elastic.SetRetrier(elastic.NewBackoffRetrier(elastic.NewExponentialBackoff(10*time.Millisecond, 10*time.Second))))
+		if err == nil {
+			return client, nil
+		} else {
+			log.Warn("Failed in connection to Elasticsearch '", err, "' sleeping now..")
+			time.Sleep(10 * time.Second)
+		}
+	}
+	return nil, err
+}
 
 func main() {
 	flag.Parse()
@@ -56,10 +74,8 @@ func main() {
 	interval := time.Duration(*sleepInterval)
 
 	// Create elasticsearch client
-	client, err := elastic.NewClient(
-		elastic.SetURL(*host),
-		elastic.SetSniff(false))
-
+	var client *elastic.Client
+	client, err = getElasticsearchClient()
 	if err != nil {
 		log.Fatal("Failed in creating elasticserch client ", err)
 	}
