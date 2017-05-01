@@ -1,10 +1,10 @@
-hash: 2d80b96efe5460b87cdab7617c1419380f34a2de0c5f58c37d617e77b4e4309f
-updated: 2017-04-22T22:04:02.230045656+02:00
+hash: 8ca38b6472d31b53f8fe4107953c0faf8f0e438e11cafdc32e747a7218b2eb8e
+updated: 2017-05-01T22:22:32.293808686+02:00
 imports:
 - name: github.com/clbanning/mxj
   version: 185f4035999c087d40a5bc20c264bfe7f4a99422
 - name: github.com/davecgh/go-spew
-  version: 04cdfd42973bb9c8589fd6a731800cf222fde1a9
+  version: 346938d642f2ec3594ed81d874461961cd0faa76
   subpackages:
   - spew
 - name: github.com/fatih/structs
@@ -18,23 +18,21 @@ imports:
 - name: github.com/moul/http2curl
   version: 4e24498b31dba4683efb9d35c1c8a91e2eda28c8
 - name: github.com/parnurzeal/gorequest
-  version: 5ba0c8579b72c0577d482e07d3d0f01731641ca7
+  version: 5bf13be198787abbed057fb7c4007f372083a0f5
 - name: github.com/pkg/errors
   version: ff09b135c25aae272398c51a07235b90a75aa4f0
 - name: github.com/Sirupsen/logrus
-  version: ba1b36c82c5e05c4f912a88eab0dcd91a171688f
+  version: 10f801ebc38b33738c9d17d50860f484a0988ff5
 - name: golang.org/x/net
-  version: e90d6d0afc4c315a0d87a568ae68577cc15149a0
+  version: da118f7b8e5954f39d0d2130ab35d4bf0e3cb344
   subpackages:
-  - context
-  - context/ctxhttp
   - publicsuffix
 - name: golang.org/x/sys
-  version: ea9bcade75cb975a0b9738936568ab388b845617
+  version: 9ccfe848b9db8435a24c424abbc07a921adf1df5
   subpackages:
   - unix
 - name: gopkg.in/olivere/elastic.v5
-  version: 00cf81dff7fdb9e31f70e99bd909339789e71a8e
+  version: 6f76abde0f1f149b7d6fc47aee4c54366844f775
   subpackages:
   - uritemplates
 testImports: []
