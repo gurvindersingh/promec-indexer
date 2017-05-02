@@ -2,7 +2,7 @@ FROM alpine:3.5
 
 ENV COMET_VERSION 2016012
 
-RUN apk update && apk add --no-cache ca-certificates wget
+RUN apk update && apk add --no-cache ca-certificates wget tzdata
 WORKDIR /tmp
 RUN ZIP=comet_binaries_$COMET_VERSION.zip && \
 	wget -q https://github.com/BioDocker/software-archive/releases/download/Comet/$ZIP -O /tmp/$ZIP && \
